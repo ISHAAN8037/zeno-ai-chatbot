@@ -1,0 +1,272 @@
+/* Voice Controls Container */
+.voice-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e9ecef;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+}
+
+.voice-controls.unsupported {
+  background: #6c757d;
+  flex-direction: column;
+  gap: 8px;
+  text-align: center;
+}
+
+/* Voice Input Button */
+.voice-input-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+}
+
+.voice-input-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.voice-input-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.voice-input-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Voice Input Button States */
+.voice-input-btn.listening {
+  background: rgba(231, 76, 60, 0.8);
+  border-color: #e74c3c;
+  animation: pulse 1.5s infinite;
+}
+
+.voice-input-btn.speaking {
+  background: rgba(39, 174, 96, 0.8);
+  border-color: #27ae60;
+}
+
+.voice-input-btn.error {
+  background: rgba(231, 76, 60, 0.8);
+  border-color: #e74c3c;
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Voice Output Button */
+.voice-output-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+}
+
+.voice-output-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.voice-output-btn:active {
+  transform: translateY(0);
+}
+
+.voice-output-btn.enabled {
+  background: rgba(39, 174, 96, 0.8);
+  border-color: #27ae60;
+}
+
+.voice-output-btn.disabled {
+  background: rgba(108, 117, 125, 0.8);
+  border-color: #6c757d;
+}
+
+/* Voice Icon */
+.voice-icon {
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+.voice-input-btn:hover .voice-icon {
+  transform: scale(1.1);
+}
+
+.voice-input-btn.listening .voice-icon {
+  animation: bounce 1s infinite;
+}
+
+/* Voice Text */
+.voice-text {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Voice Status Indicator */
+.voice-status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+/* Voice Settings Button */
+.voice-settings-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.voice-settings-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: scale(1.1);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  transition: all 0.3s ease;
+}
+
+.status-dot.listening {
+  background: #e74c3c;
+  animation: pulse 1.5s infinite;
+}
+
+.status-dot.speaking {
+  background: #27ae60;
+  animation: pulse 1.5s infinite;
+}
+
+.status-dot.error {
+  background: #e74c3c;
+  animation: blink 0.5s infinite;
+}
+
+.status-text {
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+/* Voice Help Text */
+.voice-help {
+  font-size: 12px;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-5px);
+  }
+  60% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0.3;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .voice-controls {
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 15px;
+  }
+  
+  .voice-status-indicator {
+    margin-left: 0;
+    justify-content: center;
+  }
+  
+  .voice-input-btn,
+  .voice-output-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .voice-controls {
+    padding: 10px 12px;
+  }
+  
+  .voice-text {
+    font-size: 13px;
+  }
+  
+  .voice-icon {
+    font-size: 16px;
+  }
+}
