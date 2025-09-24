@@ -248,7 +248,7 @@ const Chat = () => {
           voiceService.speak(enhancedResponse);
         }
       } else {
-        // Send to Langflow for AI response
+        // Send to our chat API for AI response
         const response = await langflowApi.sendMessage(userMessage.content);
         const enhancedResponse = processResponse(response, userMessage.content, topic);
         

@@ -8,28 +8,26 @@ class LangflowApiService {
     this.apiKey = getApiKey();
   }
 
-  // Send message to Langflow flow
-  async sendMessage(message) {
+  // Send message to chat API
+  async sendMessage(message, userId = null) {
     try {
       // Check message length to prevent token limit issues
       if (message.length > 4000) {
         throw new Error('Message too long. Please keep your question under 4000 characters.');
       }
 
-      const url = `${this.baseUrl}/api/v1/run/${this.flowId}`;
+      const url = `${this.baseUrl}/api/chat`;
       
       const payload = {
-        output_type: "chat",
-        input_type: "chat",
-        input_value: message
+        message: message,
+        userId: userId
       };
 
       const headers = {
-        "Content-Type": "application/json",
-        "x-api-key": this.apiKey
+        "Content-Type": "application/json"
       };
 
-      console.log('🚀 Sending message to Langflow:', { url, payload });
+      console.log('🚀 Sending message to chat API:', { url, payload });
 
       const response = await fetch(url, {
         method: 'POST',
@@ -42,15 +40,16 @@ class LangflowApiService {
       }
 
       const data = await response.json();
-      console.log('📥 Raw Langflow response:', data);
+      console.log('📥 Chat API response:', data);
       
-      const parsedResponse = this.parseResponse(data);
-      console.log('✅ Parsed response:', parsedResponse);
-      
-      return parsedResponse;
+      if (data.success && data.response) {
+        return data.response;
+      } else {
+        throw new Error(data.error || 'No response received');
+      }
       
     } catch (error) {
-      console.error('❌ Langflow API Error:', error);
+      console.error('❌ Chat API Error:', error);
       throw new Error(`Failed to get response: ${error.message}`);
     }
   }

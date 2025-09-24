@@ -181,17 +181,49 @@ function App() {
     setInputMessage('');
     setIsLoading(true);
 
-    // Simulate AI response
-    setTimeout(() => {
-      const botMessage = {
+    try {
+      // Call the real chat API
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: inputMessage.trim(),
+          userId: user?.id || 'anonymous'
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      if (data.success && data.response) {
+        const botMessage = {
+          id: Date.now() + 1,
+          type: 'bot',
+          content: data.response,
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, botMessage]);
+      } else {
+        throw new Error(data.error || 'No response received');
+      }
+    } catch (error) {
+      console.error('Chat API Error:', error);
+      const errorMessage = {
         id: Date.now() + 1,
         type: 'bot',
-        content: `I understand you said: "${inputMessage}". This is a demo response. In the full version, I would connect to advanced AI services to provide intelligent answers.`,
-        timestamp: new Date()
+        content: `Sorry, I encountered an error: ${error.message}. Please try again.`,
+        timestamp: new Date(),
+        isError: true
       };
-      setMessages(prev => [...prev, botMessage]);
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   const goBackToHome = () => {

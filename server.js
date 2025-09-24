@@ -480,6 +480,299 @@ app.put('/api/user/preferences', authenticateToken, async (req, res) => {
   }
 });
 
+// Chat API endpoint
+app.post('/api/chat', async (req, res) => {
+  try {
+    const { message, userId } = req.body;
+    
+    if (!message) {
+      return res.status(400).json({ error: 'Message is required' });
+    }
+
+    // Simple AI response simulation (replace with actual AI service)
+    const responses = [
+      "Hello! I'm Zeno, your AI assistant. How can I help you today?",
+      "That's an interesting question! Let me think about that...",
+      "I understand what you're asking. Here's what I think...",
+      "Great question! Based on my knowledge, I would suggest...",
+      "I'm here to help! Could you provide more details about what you need?",
+      "That's a complex topic. Let me break it down for you...",
+      "I appreciate your question. Here's my perspective...",
+      "Interesting point! Let me share some insights on that...",
+      "I'm designed to be helpful and informative. What specific information do you need?",
+      "That's a great question! I'd be happy to help you understand this better."
+    ];
+
+    // Simulate some processing time
+    await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
+
+    // Generate an intelligent response based on the message
+    let response;
+    const lowerMessage = message.toLowerCase();
+    
+    // Programming and Technology Questions
+    if (lowerMessage.includes('python') || lowerMessage.includes('define python')) {
+      response = `🐍 **Python Programming Language**
+
+**What is Python?**
+Python is a high-level, interpreted programming language known for its simplicity and readability. Created by Guido van Rossum in 1991, Python emphasizes code readability and allows programmers to express concepts in fewer lines of code.
+
+**Key Features:**
+• **Easy to Learn**: Simple syntax that's close to natural language
+• **Versatile**: Used for web development, data science, AI, automation, and more
+• **Large Community**: Extensive libraries and frameworks
+• **Cross-Platform**: Runs on Windows, Mac, Linux
+
+**Popular Uses:**
+• Web Development (Django, Flask)
+• Data Science & Analytics (Pandas, NumPy)
+• Machine Learning (TensorFlow, PyTorch)
+• Automation & Scripting
+• Game Development
+
+**Example Code:**
+\`\`\`python
+# Simple Python program
+def greet(name):
+    return f"Hello, {name}!"
+
+print(greet("World"))
+\`\`\`
+
+Would you like me to explain any specific aspect of Python in more detail?`;
+    } else if (lowerMessage.includes('javascript') || lowerMessage.includes('js')) {
+      response = `🟨 **JavaScript Programming Language**
+
+**What is JavaScript?**
+JavaScript is a versatile programming language primarily used for web development. It's the language that makes websites interactive and dynamic.
+
+**Key Features:**
+• **Client-Side & Server-Side**: Runs in browsers and on servers (Node.js)
+• **Dynamic**: No need to declare variable types
+• **Event-Driven**: Responds to user interactions
+• **Asynchronous**: Handles multiple operations efficiently
+
+**Common Uses:**
+• Frontend Web Development (React, Vue, Angular)
+• Backend Development (Node.js, Express)
+• Mobile Apps (React Native)
+• Desktop Applications (Electron)
+
+Would you like to learn about specific JavaScript concepts or frameworks?`;
+    } else if (lowerMessage.includes('react')) {
+      response = `⚛️ **React JavaScript Library**
+
+**What is React?**
+React is a popular JavaScript library for building user interfaces, especially single-page applications. Created by Facebook, it uses a component-based architecture.
+
+**Key Concepts:**
+• **Components**: Reusable UI pieces
+• **JSX**: JavaScript syntax extension
+• **Virtual DOM**: Efficient updates
+• **State Management**: Managing data changes
+
+**Why Use React?**
+• Fast and efficient rendering
+• Large ecosystem and community
+• Great for complex UIs
+• Works well with other libraries
+
+Would you like me to explain React hooks, components, or state management?`;
+    } else if (lowerMessage.includes('html')) {
+      response = `🌐 **HTML (HyperText Markup Language)**
+
+**What is HTML?**
+HTML is the standard markup language for creating web pages. It structures content using elements and tags.
+
+**Key Concepts:**
+• **Elements**: Building blocks of HTML
+• **Tags**: Markup that defines content
+• **Attributes**: Additional information about elements
+• **Semantic HTML**: Meaningful element names
+
+**Basic Structure:**
+\`\`\`html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Page</title>
+</head>
+<body>
+    <h1>Hello World!</h1>
+    <p>This is a paragraph.</p>
+</body>
+</html>
+\`\`\`
+
+Would you like to learn about specific HTML elements or CSS styling?`;
+    } else if (lowerMessage.includes('css')) {
+      response = `🎨 **CSS (Cascading Style Sheets)**
+
+**What is CSS?**
+CSS is a stylesheet language used to describe the presentation of HTML documents. It controls how web pages look and feel.
+
+**Key Concepts:**
+• **Selectors**: Target HTML elements
+• **Properties**: What to style (color, size, etc.)
+• **Values**: How to style (red, 20px, etc.)
+• **Box Model**: How elements are sized and spaced
+
+**Example:**
+\`\`\`css
+h1 {
+    color: blue;
+    font-size: 24px;
+    text-align: center;
+}
+\`\`\`
+
+Would you like to learn about CSS Grid, Flexbox, or responsive design?`;
+    } else if (lowerMessage.includes('machine learning') || lowerMessage.includes('ai') || lowerMessage.includes('artificial intelligence')) {
+      response = `🤖 **Machine Learning & Artificial Intelligence**
+
+**What is Machine Learning?**
+Machine Learning is a subset of AI that enables computers to learn and improve from experience without being explicitly programmed.
+
+**Types of ML:**
+• **Supervised Learning**: Learning with labeled data
+• **Unsupervised Learning**: Finding patterns in unlabeled data
+• **Reinforcement Learning**: Learning through trial and error
+
+**Common Applications:**
+• Image Recognition
+• Natural Language Processing
+• Recommendation Systems
+• Predictive Analytics
+• Autonomous Vehicles
+
+**Popular Tools:**
+• Python: TensorFlow, PyTorch, Scikit-learn
+• R: Caret, Random Forest
+• Cloud: AWS SageMaker, Google AI Platform
+
+Would you like to explore specific ML algorithms or applications?`;
+    } else if (lowerMessage.includes('database') || lowerMessage.includes('sql')) {
+      response = `🗄️ **Databases & SQL**
+
+**What is a Database?**
+A database is an organized collection of data stored and accessed electronically. SQL (Structured Query Language) is used to manage relational databases.
+
+**Types of Databases:**
+• **Relational**: MySQL, PostgreSQL, SQLite
+• **NoSQL**: MongoDB, Cassandra, Redis
+• **Graph**: Neo4j, Amazon Neptune
+
+**SQL Basics:**
+\`\`\`sql
+-- Create a table
+CREATE TABLE users (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100)
+);
+
+-- Insert data
+INSERT INTO users VALUES (1, 'John', 'john@email.com');
+
+-- Query data
+SELECT * FROM users WHERE name = 'John';
+\`\`\`
+
+Would you like to learn about specific database concepts or query optimization?`;
+    } else if (lowerMessage.includes('math') || lowerMessage.includes('calculate') || lowerMessage.includes('solve')) {
+      response = `🧮 **Mathematics & Problem Solving**
+
+I can help you with various mathematical concepts and problem-solving techniques!
+
+**Areas I can assist with:**
+• **Algebra**: Equations, functions, graphing
+• **Calculus**: Derivatives, integrals, limits
+• **Statistics**: Probability, distributions, analysis
+• **Geometry**: Shapes, angles, areas, volumes
+• **Trigonometry**: Sine, cosine, tangent functions
+• **Linear Algebra**: Vectors, matrices, transformations
+
+**Problem-Solving Approach:**
+1. Understand the problem
+2. Identify what's given and what's needed
+3. Choose appropriate methods
+4. Work through step-by-step
+5. Verify the solution
+
+What specific math problem or concept would you like help with?`;
+    } else if (lowerMessage.includes('hello') || lowerMessage.includes('hi')) {
+      response = "Hello! I'm Zeno, your AI assistant. How can I help you today?";
+    } else if (lowerMessage.includes('help')) {
+      response = "I'm here to help! I can assist you with various topics including general knowledge, problem-solving, creative writing, and more. What would you like to know?";
+    } else if (lowerMessage.includes('weather')) {
+      response = "I can help you with weather information! However, I need to be connected to a weather service. For now, I can tell you that weather varies by location and time. What specific weather information do you need?";
+    } else if (lowerMessage.includes('stock') || lowerMessage.includes('finance')) {
+      response = "I can help with financial and stock market information! I can provide analysis, explain concepts, or help you understand market trends. What financial topic interests you?";
+    } else if (lowerMessage.includes('thank')) {
+      response = "You're very welcome! I'm glad I could help. Is there anything else you'd like to know?";
+    } else {
+      // Provide a more helpful response for unknown questions
+      response = `I understand you're asking about "${message}". While I have knowledge in many areas including programming, mathematics, science, and general topics, I'd be happy to help you with more specific information.
+
+**I can help with:**
+• Programming languages (Python, JavaScript, React, etc.)
+• Web development (HTML, CSS, frameworks)
+• Data science and machine learning
+• Mathematics and problem-solving
+• General knowledge and explanations
+
+Could you provide more details about what specifically you'd like to know? I'm here to give you detailed, helpful answers!`;
+    }
+
+    // Store chat history if userId is provided
+    if (userId) {
+      if (!userChatHistory[userId]) {
+        userChatHistory[userId] = [];
+      }
+      userChatHistory[userId].push({
+        user: message,
+        assistant: response,
+        timestamp: new Date().toISOString()
+      });
+      saveChatHistory();
+    }
+
+    res.json({
+      success: true,
+      response: response,
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    console.error('Chat API error:', error);
+    res.status(500).json({ 
+      error: 'Failed to process chat message',
+      response: "I'm sorry, I encountered an error. Please try again."
+    });
+  }
+});
+
+// Get chat history
+app.get('/api/chat/history/:userId', (req, res) => {
+  try {
+    const { userId } = req.params;
+    const history = userChatHistory[userId] || [];
+    res.json({ success: true, history });
+  } catch (error) {
+    console.error('Chat history error:', error);
+    res.status(500).json({ error: 'Failed to get chat history' });
+  }
+});
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    message: 'Zeno AI Chatbot API is running',
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Serve React app for all other routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));

@@ -4,7 +4,7 @@ export const LANGFLOW_CONFIG = {
   apiKey: 'sk-mZT588tijSkKdREvRTMDhnYEjGzJaILFxE685kUKI1A',
   
   // Langflow server URL - direct connection to Langflow server
-  baseUrl: 'http://localhost:7860',
+  baseUrl: 'http://localhost:3001',
   
   // Your flow ID
   flowId: '2078174c-067b-4095-919d-582126a918e6',

@@ -500,3 +500,4 @@ class StockAnalysisService {
 export default new StockAnalysisService();
 
 
+
