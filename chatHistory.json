@@ -10,6 +10,16 @@
       "user": "define python",
       "assistant": "🐍 **Python Programming Language**\n\n**What is Python?**\nPython is a high-level, interpreted programming language known for its simplicity and readability. Created by Guido van Rossum in 1991, Python emphasizes code readability and allows programmers to express concepts in fewer lines of code.\n\n**Key Features:**\n• **Easy to Learn**: Simple syntax that's close to natural language\n• **Versatile**: Used for web development, data science, AI, automation, and more\n• **Large Community**: Extensive libraries and frameworks\n• **Cross-Platform**: Runs on Windows, Mac, Linux\n\n**Popular Uses:**\n• Web Development (Django, Flask)\n• Data Science & Analytics (Pandas, NumPy)\n• Machine Learning (TensorFlow, PyTorch)\n• Automation & Scripting\n• Game Development\n\n**Example Code:**\n```python\n# Simple Python program\ndef greet(name):\n    return f\"Hello, {name}!\"\n\nprint(greet(\"World\"))\n```\n\nWould you like me to explain any specific aspect of Python in more detail?",
       "timestamp": "2025-09-24T18:47:20.633Z"
+    },
+    {
+      "user": "define c++",
+      "assistant": "I understand you're asking about \"define c++\". While I have knowledge in many areas including programming, mathematics, science, and general topics, I'd be happy to help you with more specific information.\n\n**I can help with:**\n• Programming languages (Python, JavaScript, React, etc.)\n• Web development (HTML, CSS, frameworks)\n• Data science and machine learning\n• Mathematics and problem-solving\n• General knowledge and explanations\n\nCould you provide more details about what specifically you'd like to know? I'm here to give you detailed, helpful answers!",
+      "timestamp": "2025-09-24T18:54:23.993Z"
+    },
+    {
+      "user": "define python",
+      "assistant": "🐍 **Python Programming Language**\n\n**What is Python?**\nPython is a high-level, interpreted programming language known for its simplicity and readability. Created by Guido van Rossum in 1991, Python emphasizes code readability and allows programmers to express concepts in fewer lines of code.\n\n**Key Features:**\n• **Easy to Learn**: Simple syntax that's close to natural language\n• **Versatile**: Used for web development, data science, AI, automation, and more\n• **Large Community**: Extensive libraries and frameworks\n• **Cross-Platform**: Runs on Windows, Mac, Linux\n\n**Popular Uses:**\n• Web Development (Django, Flask)\n• Data Science & Analytics (Pandas, NumPy)\n• Machine Learning (TensorFlow, PyTorch)\n• Automation & Scripting\n• Game Development\n\n**Example Code:**\n```python\n# Simple Python program\ndef greet(name):\n    return f\"Hello, {name}!\"\n\nprint(greet(\"World\"))\n```\n\nWould you like me to explain any specific aspect of Python in more detail?",
+      "timestamp": "2025-09-24T18:54:42.625Z"
     }
   ]
 }
