@@ -5,6 +5,7 @@ import fundamentalAnalysisService from '../services/fundamentalAnalysisService';
 import sentimentAnalysisService from '../services/sentimentAnalysisService';
 import predictiveModelingService from '../services/predictiveModelingService';
 import riskPortfolioService from '../services/riskPortfolioService';
+import stockMarketKnowledgeService from '../services/stockMarketKnowledgeService';
 
 const StockAnalysis = ({ isVisible, onClose }) => {
   const [symbol, setSymbol] = useState('');
@@ -304,39 +305,39 @@ const OverviewTab = ({ analysis, comprehensiveAnalysis }) => {
   if (!analysis) return <div>No analysis data available</div>;
 
   return (
-    <div className="space-y-6">
-      {/* Stock Quote Card */}
-      <div className="p-6 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-800/30 rounded-2xl">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-            {analysis.symbol} - ${analysis.quote.price.toFixed(2)}
-          </h3>
-          <div className={`text-lg font-semibold ${
-            analysis.quote.change >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
-          }`}>
-            {analysis.quote.change >= 0 ? '+' : ''}{analysis.quote.change.toFixed(2)} ({analysis.quote.changePercent.toFixed(2)}%)
-          </div>
-        </div>
-        
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div>
-            <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">Open</p>
-            <p className="text-gray-900 dark:text-white font-medium">${analysis.quote.open.toFixed(2)}</p>
-          </div>
-          <div>
-            <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">High</p>
-            <p className="text-gray-900 dark:text-white font-medium">${analysis.quote.high.toFixed(2)}</p>
-          </div>
-          <div>
-            <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">Low</p>
-            <p className="text-gray-900 dark:text-white font-medium">${analysis.quote.low.toFixed(2)}</p>
-          </div>
-          <div>
-            <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">Volume</p>
-            <p className="text-gray-900 dark:text-white font-medium">{analysis.quote.volume.toLocaleString()}</p>
-          </div>
-        </div>
-      </div>
+                <div className="space-y-6">
+                  {/* Stock Quote Card */}
+                  <div className="p-6 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-800/30 rounded-2xl">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                        {analysis.symbol} - ${analysis.quote.price.toFixed(2)}
+                      </h3>
+                      <div className={`text-lg font-semibold ${
+                        analysis.quote.change >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+                      }`}>
+                        {analysis.quote.change >= 0 ? '+' : ''}{analysis.quote.change.toFixed(2)} ({analysis.quote.changePercent.toFixed(2)}%)
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <div>
+                        <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">Open</p>
+                        <p className="text-gray-900 dark:text-white font-medium">${analysis.quote.open.toFixed(2)}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">High</p>
+                        <p className="text-gray-900 dark:text-white font-medium">${analysis.quote.high.toFixed(2)}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">Low</p>
+                        <p className="text-gray-900 dark:text-white font-medium">${analysis.quote.low.toFixed(2)}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">Volume</p>
+                        <p className="text-gray-900 dark:text-white font-medium">{analysis.quote.volume.toLocaleString()}</p>
+                      </div>
+                    </div>
+                  </div>
 
       {/* Comprehensive Analysis Summary */}
       {comprehensiveAnalysis && (
@@ -370,47 +371,47 @@ const OverviewTab = ({ analysis, comprehensiveAnalysis }) => {
         </div>
       )}
 
-      {/* Analysis Summary */}
-      <div className="p-6 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 rounded-2xl">
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-          📊 Analysis Summary
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="text-center">
-            <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">Recommendation</p>
-            <div className={`text-2xl font-bold ${
-              analysis.analysis.recommendation === 'buy' ? 'text-green-600 dark:text-green-400' :
-              analysis.analysis.recommendation === 'sell' ? 'text-red-600 dark:text-red-400' :
-              'text-yellow-600 dark:text-yellow-400'
-            }`}>
-              {analysis.analysis.recommendation.toUpperCase()}
-            </div>
-          </div>
-          <div className="text-center">
-            <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">Risk Level</p>
-            <div className={`text-2xl font-bold ${
-              analysis.analysis.riskLevel === 'low' ? 'text-green-600 dark:text-green-400' :
-              analysis.analysis.riskLevel === 'medium' ? 'text-yellow-600 dark:text-yellow-400' :
-              'text-red-600 dark:text-red-400'
-            }`}>
-              {analysis.analysis.riskLevel.toUpperCase()}
-            </div>
-          </div>
-          <div className="text-center">
-            <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">Technical Score</p>
-            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-              {(analysis.analysis.technicalScore * 100).toFixed(0)}%
-            </div>
-          </div>
-        </div>
-        
-        <div className="mt-6 p-4 bg-white/50 dark:bg-gray-800/50 rounded-xl">
-          <p className="text-gray-700 dark:text-gray-200 text-center">
-            {analysis.analysis.summary}
-          </p>
-        </div>
-      </div>
-    </div>
+                  {/* Analysis Summary */}
+                  <div className="p-6 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 rounded-2xl">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                      📊 Analysis Summary
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      <div className="text-center">
+                        <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">Recommendation</p>
+                        <div className={`text-2xl font-bold ${
+                          analysis.analysis.recommendation === 'buy' ? 'text-green-600 dark:text-green-400' :
+                          analysis.analysis.recommendation === 'sell' ? 'text-red-600 dark:text-red-400' :
+                          'text-yellow-600 dark:text-yellow-400'
+                        }`}>
+                          {analysis.analysis.recommendation.toUpperCase()}
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">Risk Level</p>
+                        <div className={`text-2xl font-bold ${
+                          analysis.analysis.riskLevel === 'low' ? 'text-green-600 dark:text-green-400' :
+                          analysis.analysis.riskLevel === 'medium' ? 'text-yellow-600 dark:text-yellow-400' :
+                          'text-red-600 dark:text-red-400'
+                        }`}>
+                          {analysis.analysis.riskLevel.toUpperCase()}
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">Technical Score</p>
+                        <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                          {(analysis.analysis.technicalScore * 100).toFixed(0)}%
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-6 p-4 bg-white/50 dark:bg-gray-800/50 rounded-xl">
+                      <p className="text-gray-700 dark:text-gray-200 text-center">
+                        {analysis.analysis.summary}
+                      </p>
+                    </div>
+                  </div>
+                </div>
   );
 };
 
@@ -418,11 +419,11 @@ const TechnicalTab = ({ technicalAnalysis, chartData }) => {
   if (!technicalAnalysis) return <div>No technical analysis data available</div>;
 
   return (
-    <div className="space-y-6">
-      <div className="p-6 bg-gradient-to-br from-indigo-100 to-indigo-200 dark:from-indigo-900/30 dark:to-indigo-800/30 rounded-2xl">
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-          🔧 Technical Indicators
-        </h3>
+                <div className="space-y-6">
+                  <div className="p-6 bg-gradient-to-br from-indigo-100 to-indigo-200 dark:from-indigo-900/30 dark:to-indigo-800/30 rounded-2xl">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                      🔧 Technical Indicators
+                    </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* RSI */}
           <div className="p-4 bg-white/50 dark:bg-gray-800/50 rounded-xl">
@@ -453,8 +454,8 @@ const TechnicalTab = ({ technicalAnalysis, chartData }) => {
             <p className="text-sm text-gray-600 dark:text-gray-300">Short-term trend</p>
           </div>
         </div>
-      </div>
-    </div>
+                  </div>
+                </div>
   );
 };
 
@@ -462,11 +463,11 @@ const FundamentalTab = ({ fundamentalAnalysis }) => {
   if (!fundamentalAnalysis) return <div>No fundamental analysis data available</div>;
 
   return (
-    <div className="space-y-6">
-      <div className="p-6 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 rounded-2xl">
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-          🏢 Company Overview
-        </h3>
+                <div className="space-y-6">
+                  <div className="p-6 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 rounded-2xl">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                      🏢 Company Overview
+                    </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Company Information</h4>
@@ -503,8 +504,8 @@ const FundamentalTab = ({ fundamentalAnalysis }) => {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+                  </div>
+                </div>
   );
 };
 
@@ -512,11 +513,11 @@ const SentimentTab = ({ sentimentAnalysis }) => {
   if (!sentimentAnalysis) return <div>No sentiment analysis data available</div>;
 
   return (
-    <div className="space-y-6">
-      <div className="p-6 bg-gradient-to-br from-purple-100 to-purple-200 dark:from-purple-900/30 dark:to-purple-800/30 rounded-2xl">
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-          📰 Market Sentiment
-        </h3>
+                <div className="space-y-6">
+                  <div className="p-6 bg-gradient-to-br from-purple-100 to-purple-200 dark:from-purple-900/30 dark:to-purple-800/30 rounded-2xl">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                      📰 Market Sentiment
+                    </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center">
             <h4 className="font-semibold text-gray-900 dark:text-white mb-2">News Sentiment</h4>
@@ -543,9 +544,9 @@ const SentimentTab = ({ sentimentAnalysis }) => {
             </div>
             <p className="text-sm text-gray-600 dark:text-gray-300">
               Confidence: {(sentimentAnalysis.overall?.confidence * 100)?.toFixed(0) || 'N/A'}%
-            </p>
-          </div>
-        </div>
+                    </p>
+                  </div>
+                </div>
       </div>
     </div>
   );
@@ -636,73 +637,253 @@ const ChartsTab = ({ chartData, comprehensiveAnalysis }) => {
   if (!chartData) return <div>No chart data available</div>;
 
   return (
-    <div className="space-y-6">
-      <div className="p-6 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-800/30 rounded-2xl">
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                <div className="space-y-6">
+                  <div className="p-6 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-800/30 rounded-2xl">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
           📈 Interactive Charts
-        </h3>
+                    </h3>
         <div className="h-96 bg-white/50 dark:bg-gray-800/50 rounded-xl flex items-center justify-center">
           <div className="text-center">
             <div className="text-6xl mb-4">📊</div>
-            <p className="text-gray-600 dark:text-gray-300">
+                    <p className="text-gray-600 dark:text-gray-300">
               Interactive charts will be displayed here
             </p>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
               Price data: {chartData.price?.length || 0} data points
-            </p>
-          </div>
-        </div>
+                    </p>
+                  </div>
+                </div>
       </div>
     </div>
   );
 };
 
 const KnowledgeTab = () => {
-  const marketConcepts = [
-    {
-      term: "Bull Market",
-      definition: "A market condition where prices are rising or expected to rise, typically characterized by investor confidence and optimism.",
-      example: "The S&P 500 gained 20% over the past year, indicating a bull market."
-    },
-    {
-      term: "Bear Market",
-      definition: "A market condition where prices are falling or expected to fall, typically characterized by investor pessimism and fear.",
-      example: "The market dropped 25% from its peak, signaling a bear market."
-    },
-    {
-      term: "Support Level",
-      definition: "A price level where a stock or market tends to find buying interest and bounce back up.",
-      example: "The stock found support at $100 and bounced back to $110."
-    },
-    {
-      term: "Resistance Level",
-      definition: "A price level where a stock or market tends to find selling pressure and struggles to break through.",
-      example: "The stock hit resistance at $150 and pulled back to $140."
-    },
-    {
-      term: "RSI (Relative Strength Index)",
-      definition: "A momentum oscillator that measures the speed and change of price movements, ranging from 0 to 100.",
-      example: "RSI above 70 indicates overbought conditions, while RSI below 30 indicates oversold conditions."
-    },
-    {
-      term: "MACD (Moving Average Convergence Divergence)",
-      definition: "A trend-following momentum indicator that shows the relationship between two moving averages of a security's price.",
-      example: "When MACD line crosses above signal line, it's considered a bullish signal."
-    }
+  const [selectedCategory, setSelectedCategory] = useState('basicConcepts');
+  const [selectedExperienceLevel, setSelectedExperienceLevel] = useState('beginner');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [showSearchResults, setShowSearchResults] = useState(false);
+
+  const categories = [
+    { key: 'basicConcepts', name: 'Basic Concepts', icon: '🏛️' },
+    { key: 'technicalAnalysis', name: 'Technical Analysis', icon: '📊' },
+    { key: 'technicalIndicators', name: 'Technical Indicators', icon: '🔧' },
+    { key: 'fundamentalAnalysis', name: 'Fundamental Analysis', icon: '🏢' },
+    { key: 'tradingStrategies', name: 'Trading Strategies', icon: '💼' },
+    { key: 'riskManagement', name: 'Risk Management', icon: '⚠️' },
+    { key: 'marketPsychology', name: 'Market Psychology', icon: '🧠' },
+    { key: 'economicIndicators', name: 'Economic Indicators', icon: '📈' }
   ];
+
+  const experienceLevels = [
+    { key: 'beginner', name: 'Beginner', color: 'green' },
+    { key: 'intermediate', name: 'Intermediate', color: 'yellow' },
+    { key: 'advanced', name: 'Advanced', color: 'red' }
+  ];
+
+  const handleSearch = (query) => {
+    if (query.trim()) {
+      const results = stockMarketKnowledgeService.searchKnowledge(query);
+      setSearchResults(results);
+      setShowSearchResults(true);
+    } else {
+      setShowSearchResults(false);
+    }
+  };
+
+  const getKnowledgeData = () => {
+    if (showSearchResults) {
+      return searchResults.map(result => result.data);
+    }
+    
+    if (selectedExperienceLevel !== 'all') {
+      const concepts = stockMarketKnowledgeService.getConceptsByExperienceLevel(selectedExperienceLevel);
+      return concepts.map(concept => {
+        // Find the concept in any category
+        for (const category of Object.keys(stockMarketKnowledgeService.knowledgeBase)) {
+          if (stockMarketKnowledgeService.knowledgeBase[category][concept]) {
+            return stockMarketKnowledgeService.knowledgeBase[category][concept];
+          }
+        }
+        return null;
+      }).filter(Boolean);
+    }
+    
+    return Object.values(stockMarketKnowledgeService.getKnowledgeByCategory(selectedCategory));
+  };
+
+  const knowledgeData = getKnowledgeData();
+  const randomTip = stockMarketKnowledgeService.getRandomTip();
 
   return (
     <div className="space-y-6">
+      {/* Header with Search */}
       <div className="p-6 bg-gradient-to-br from-yellow-100 to-yellow-200 dark:from-yellow-900/30 dark:to-yellow-800/30 rounded-2xl">
         <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-          📚 Stock Market Knowledge Base
+          📚 Comprehensive Stock Market Knowledge Base
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {marketConcepts.map((concept, index) => (
-            <div key={index} className="p-4 bg-white/50 dark:bg-gray-800/50 rounded-xl">
-              <h4 className="font-semibold text-gray-900 dark:text-white mb-2">{concept.term}</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">{concept.definition}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 italic">Example: {concept.example}</p>
+        
+        {/* Search Bar */}
+        <div className="mb-6">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search market concepts, strategies, indicators..."
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                handleSearch(e.target.value);
+              }}
+              className="w-full px-4 py-3 pl-10 rounded-xl bg-white/50 dark:bg-gray-800/50 border border-gray-300 dark:border-gray-600 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20 transition-all duration-300 text-gray-900 dark:text-white"
+            />
+            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+              🔍
+            </div>
+          </div>
+        </div>
+
+        {/* Category Tabs */}
+        <div className="flex flex-wrap gap-2 mb-4">
+          {categories.map((category) => (
+            <button
+              key={category.key}
+              onClick={() => {
+                setSelectedCategory(category.key);
+                setShowSearchResults(false);
+                setSearchQuery('');
+              }}
+              className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                selectedCategory === category.key
+                  ? 'bg-yellow-500 text-white'
+                  : 'bg-white/50 dark:bg-gray-800/50 text-gray-700 dark:text-gray-300 hover:bg-yellow-400 hover:text-white'
+              }`}
+            >
+              {category.icon} {category.name}
+            </button>
+          ))}
+        </div>
+
+        {/* Experience Level Filter */}
+        <div className="flex gap-2 mb-4">
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300 self-center">Level:</span>
+          {experienceLevels.map((level) => (
+            <button
+              key={level.key}
+              onClick={() => {
+                setSelectedExperienceLevel(level.key);
+                setShowSearchResults(false);
+                setSearchQuery('');
+              }}
+              className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-300 ${
+                selectedExperienceLevel === level.key
+                  ? `bg-${level.color}-500 text-white`
+                  : 'bg-white/50 dark:bg-gray-800/50 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+              }`}
+            >
+              {level.name}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Random Tip */}
+      <div className="p-4 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 rounded-2xl">
+        <h4 className="font-semibold text-gray-900 dark:text-white mb-2">💡 Daily Market Tip</h4>
+        <p className="text-sm text-gray-700 dark:text-gray-200 mb-1">{randomTip.tip}</p>
+        {randomTip.example && (
+          <p className="text-xs text-gray-600 dark:text-gray-400 italic">Example: {randomTip.example}</p>
+        )}
+        <span className="text-xs text-gray-500 dark:text-gray-400">Category: {randomTip.category}</span>
+      </div>
+
+      {/* Knowledge Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {knowledgeData.map((concept, index) => (
+          <div key={index} className="p-6 bg-white/50 dark:bg-gray-800/50 rounded-xl hover:shadow-lg transition-all duration-300">
+            <h4 className="font-bold text-gray-900 dark:text-white mb-3 text-lg">{concept.term}</h4>
+            <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">{concept.definition}</p>
+            
+            {concept.characteristics && (
+              <div className="mb-3">
+                <h5 className="font-semibold text-gray-800 dark:text-gray-200 mb-2 text-sm">Key Characteristics:</h5>
+                <ul className="text-xs text-gray-600 dark:text-gray-400 space-y-1">
+                  {concept.characteristics.slice(0, 3).map((char, i) => (
+                    <li key={i}>• {char}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {concept.interpretation && (
+              <div className="mb-3">
+                <h5 className="font-semibold text-gray-800 dark:text-gray-200 mb-2 text-sm">Interpretation:</h5>
+                <ul className="text-xs text-gray-600 dark:text-gray-400 space-y-1">
+                  {concept.interpretation.slice(0, 2).map((interp, i) => (
+                    <li key={i}>• {interp}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {concept.example && (
+              <div className="mb-3">
+                <h5 className="font-semibold text-gray-800 dark:text-gray-200 mb-2 text-sm">Example:</h5>
+                <p className="text-xs text-gray-600 dark:text-gray-400 italic">{concept.example}</p>
+              </div>
+            )}
+
+            {concept.tradingStrategy && (
+              <div className="mb-3">
+                <h5 className="font-semibold text-gray-800 dark:text-gray-200 mb-2 text-sm">Trading Strategy:</h5>
+                <p className="text-xs text-gray-600 dark:text-gray-400">{concept.tradingStrategy}</p>
+              </div>
+            )}
+
+            {concept.timeframes && (
+              <div className="mb-3">
+                <h5 className="font-semibold text-gray-800 dark:text-gray-200 mb-2 text-sm">Timeframes:</h5>
+                <p className="text-xs text-gray-600 dark:text-gray-400">{concept.timeframes}</p>
+              </div>
+            )}
+
+            {concept.range && (
+              <div className="mb-3">
+                <h5 className="font-semibold text-gray-800 dark:text-gray-200 mb-2 text-sm">Typical Range:</h5>
+                <p className="text-xs text-gray-600 dark:text-gray-400">{concept.range}</p>
+              </div>
+            )}
+
+            {concept.rule && (
+              <div className="mt-3 p-2 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg">
+                <p className="text-xs font-semibold text-yellow-800 dark:text-yellow-200">💡 Rule: {concept.rule}</p>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Education Curriculum */}
+      <div className="p-6 bg-gradient-to-br from-purple-100 to-purple-200 dark:from-purple-900/30 dark:to-purple-800/30 rounded-2xl">
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+          🎓 Learning Paths
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {Object.entries(stockMarketKnowledgeService.getEducationCurriculum()).map(([level, curriculum]) => (
+            <div key={level} className="p-4 bg-white/50 dark:bg-gray-800/50 rounded-xl">
+              <h4 className="font-bold text-gray-900 dark:text-white mb-2">{curriculum.title}</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Duration: {curriculum.duration}</p>
+              <div className="mb-3">
+                <h5 className="font-semibold text-gray-800 dark:text-gray-200 mb-2 text-sm">Topics:</h5>
+                <ul className="text-xs text-gray-600 dark:text-gray-400 space-y-1">
+                  {curriculum.topics.map((topic, i) => (
+                    <li key={i}>• {topic}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">
+                {curriculum.concepts.length} concepts covered
+              </div>
             </div>
           ))}
         </div>
