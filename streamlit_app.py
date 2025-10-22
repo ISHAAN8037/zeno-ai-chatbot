@@ -97,6 +97,12 @@ domains = {
         'description': 'General purpose AI assistant for all topics',
         'color': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
     },
+  'knowledge': {
+    'name': 'Knowledge Base',
+    'icon': '📘',
+    'description': 'Detailed explanations of technology, finance, and general concepts',
+    'color': 'linear-gradient(135deg, #43cea2 0%, #185a9d 100%)'
+  },
     'finance': {
         'name': 'Finance & Investment',
         'icon': '💰',
@@ -125,9 +131,9 @@ domains = {
 
 # Sample responses for different domains
 def get_domain_response(domain, user_message):
-    # Check if it's a stock market related question
+    # Check if it's a stock market related question (answer regardless of domain)
     stock_search_results = search_stock_knowledge(user_message)
-    if stock_search_results and domain == 'finance':
+    if stock_search_results:
         concept = stock_search_results[0]['concept']
         return f"""📈 **{concept['title']}**
 
@@ -142,8 +148,46 @@ def get_domain_response(domain, user_message):
 
 *This is educational information only, not financial advice. Please consult with a financial advisor for personalized guidance.*"""
 
-    # Enhanced specific responses for common questions
+    # Enhanced specific responses for common questions (intent-first, domain-agnostic)
     user_lower = user_message.lower()
+
+    # Global topic detection (always answer specifically regardless of domain)
+    if any(k in user_lower for k in [' what is python', 'python ', 'python?','python']) and 'cpython' not in user_lower:
+        return """🐍 **Python Programming Language**
+
+**Definition:** Python is a high-level, interpreted programming language known for simplicity and readability.
+
+**Key Characteristics:**
+• Easy syntax • Vast libraries • Cross-platform • Great for AI/data/web/automation
+
+**Example:** Used by Google, Netflix, Instagram for data, web, ML.
+
+**Getting started:** Install Python 3.10+, learn basics, then libraries like NumPy/Pandas/Django/Flask."""
+
+    if any(k in user_lower for k in [' what is javascript', 'javascript', ' js ']):
+        return """🟨 **JavaScript**
+
+JavaScript is the language of the web used to make pages interactive. Runs in browsers and on servers via Node.js. Learn DOM, async/await, then a framework like React."""
+
+    if 'react' in user_lower:
+        return """⚛️ **React**
+
+React is a JavaScript library for building user interfaces using reusable components and a virtual DOM. Learn components, props, state, hooks (useState/useEffect), then routing and state management. Used by Facebook, Instagram, Netflix."""
+
+    if 'html' in user_lower:
+        return """🌐 **HTML**
+
+Markup language that structures web pages using elements like <div>, <p>, <a>, <img>. Combine with CSS and JavaScript for complete websites."""
+
+    if 'css' in user_lower and 'scss' not in user_lower:
+        return """🎨 **CSS**
+
+Stylesheet language for presentation: layout (Flexbox/Grid), colors, spacing, responsive design, animations. Try Tailwind or Bootstrap for faster UI."""
+
+    if 'sql' in user_lower or 'database' in user_lower:
+        return """🗄️ **Databases & SQL**
+
+Relational databases store structured data in tables; SQL queries data (SELECT/INSERT/UPDATE/DELETE, JOINs). Popular: PostgreSQL, MySQL. NoSQL (MongoDB) for documents."""
     
     # Technology domain specific responses
     if domain == 'technology':
