@@ -97,12 +97,12 @@ domains = {
         'description': 'General purpose AI assistant for all topics',
         'color': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
     },
-  'knowledge': {
-    'name': 'Knowledge Base',
-    'icon': '📘',
-    'description': 'Detailed explanations of technology, finance, and general concepts',
-    'color': 'linear-gradient(135deg, #43cea2 0%, #185a9d 100%)'
-  },
+    'knowledge': {
+        'name': 'Universal Knowledge',
+        'icon': '📚',
+        'description': 'Comprehensive answers for all topics - technology, science, business, health, and more',
+        'color': 'linear-gradient(135deg, #43cea2 0%, #185a9d 100%)'
+    },
     'finance': {
         'name': 'Finance & Investment',
         'icon': '💰',
@@ -557,12 +557,22 @@ Programming opens doors to endless possibilities!"""
 
 Good study habits are the foundation of academic success!"""
 
-    # Default responses for other cases
+    # Use universal knowledge base as fallback for any unanswered questions
+    universal_response = get_universal_knowledge(user_message)
+    if universal_response:
+        return universal_response
+    
+    # Final fallback responses
     responses = {
         'general': [
             f"I understand you're asking about: {user_message}. As a general AI assistant, I can help with a wide range of topics. Could you be more specific about what you'd like to know?",
             f"That's an interesting question about {user_message}. Let me provide you with some general information and guidance on this topic.",
             f"Thanks for your question regarding {user_message}. I'm here to help with general information and support across various subjects."
+        ],
+        'knowledge': [
+            f"I understand you're asking about: {user_message}. Let me provide you with comprehensive information about this topic.",
+            f"That's a great question about {user_message}. I can share detailed knowledge and insights on this subject.",
+            f"Regarding {user_message}, I can provide you with thorough explanations and practical guidance."
         ],
         'finance': [
             f"From a financial perspective regarding {user_message}, I should mention that this is not professional financial advice. However, I can provide general information about financial concepts and market trends.",
@@ -850,6 +860,552 @@ def get_daily_tip():
     ]
     return random.choice(tips)
 
+def get_universal_knowledge(query):
+    """Comprehensive knowledge base for all topics"""
+    query_lower = query.lower()
+    
+    # Technology & Programming
+    if any(k in query_lower for k in ['python', 'programming', 'code', 'software', 'development']):
+        if 'python' in query_lower:
+            return """🐍 **Python Programming Language**
+
+**What is Python?**
+Python is a high-level, interpreted programming language known for its simplicity and readability. Created by Guido van Rossum in 1991.
+
+**Key Features:**
+• Easy-to-learn syntax
+• Versatile applications (web, data science, AI, automation)
+• Large standard library
+• Cross-platform compatibility
+• Strong community support
+
+**Common Uses:**
+• Web development (Django, Flask)
+• Data science and analytics (NumPy, Pandas)
+• Machine learning and AI (TensorFlow, PyTorch)
+• Automation and scripting
+• Game development (Pygame)
+
+**Getting Started:**
+1. Install Python from python.org
+2. Learn basic syntax and data types
+3. Practice with simple projects
+4. Explore libraries based on your interests
+
+Python is excellent for beginners and professionals alike!"""
+        
+        elif 'javascript' in query_lower or 'js' in query_lower:
+            return """🟨 **JavaScript Programming Language**
+
+**What is JavaScript?**
+JavaScript is a dynamic programming language primarily used for web development and creating interactive web pages.
+
+**Key Features:**
+• Runs in web browsers and servers (Node.js)
+• Dynamic typing
+• Event-driven programming
+• Asynchronous capabilities
+• Extensive ecosystem
+
+**Common Uses:**
+• Frontend web development
+• Backend development (Node.js)
+• Mobile app development (React Native)
+• Desktop applications (Electron)
+• Game development
+
+**Learning Path:**
+1. Learn HTML/CSS first
+2. Master JavaScript fundamentals
+3. Explore frameworks (React, Vue, Angular)
+4. Learn Node.js for backend development
+
+JavaScript powers the modern web!"""
+        
+        elif 'react' in query_lower:
+            return """⚛️ **React JavaScript Library**
+
+**What is React?**
+React is a JavaScript library for building user interfaces, particularly single-page applications. Created by Facebook.
+
+**Key Features:**
+• Component-based architecture
+• Virtual DOM for performance
+• JSX syntax
+• Unidirectional data flow
+• Rich ecosystem
+
+**Common Uses:**
+• Web applications
+• Mobile apps (React Native)
+• Desktop apps (Electron)
+• Interactive user interfaces
+
+**Learning Path:**
+1. Master JavaScript first
+2. Learn React fundamentals
+3. Practice with hooks (useState, useEffect)
+4. Explore React ecosystem (Redux, Next.js)
+
+React is used by Facebook, Instagram, Netflix, and many others!"""
+        
+        elif 'html' in query_lower:
+            return """🌐 **HTML (HyperText Markup Language)**
+
+**What is HTML?**
+HTML is the standard markup language used to create and structure web pages.
+
+**Key Features:**
+• Markup language (not programming)
+• Uses tags to structure content
+• Works with CSS and JavaScript
+• Platform independent
+• Essential for web development
+
+**Common Uses:**
+• Website structure
+• Email templates
+• Documentation
+• Content management
+
+**Learning Path:**
+1. Learn basic HTML tags
+2. Understand semantic HTML
+3. Practice with forms and tables
+4. Combine with CSS for styling
+
+HTML is the foundation of the web!"""
+        
+        elif 'css' in query_lower:
+            return """🎨 **CSS (Cascading Style Sheets)**
+
+**What is CSS?**
+CSS is a stylesheet language used to describe the presentation of HTML documents.
+
+**Key Features:**
+• Separates content from presentation
+• Cascading rules
+• Responsive design capabilities
+• Animation and transitions
+• Works with HTML and JavaScript
+
+**Common Uses:**
+• Website styling
+• Responsive design
+• Animations
+• Print layouts
+• Theme switching
+
+**Learning Path:**
+1. Learn CSS basics
+2. Master layout (Flexbox, Grid)
+3. Practice responsive design
+4. Explore CSS frameworks (Bootstrap, Tailwind)
+
+CSS brings websites to life!"""
+        
+        elif 'database' in query_lower or 'sql' in query_lower:
+            return """🗄️ **Databases & SQL**
+
+**What are Databases?**
+A database is an organized collection of data, and SQL (Structured Query Language) is used to manage and query databases.
+
+**Key Features:**
+• Data storage and retrieval
+• ACID properties
+• Relational and NoSQL options
+• Query optimization
+• Data integrity
+
+**Common Uses:**
+• Banking systems
+• E-commerce platforms
+• Social media
+• Healthcare records
+• Government systems
+
+**Learning Path:**
+1. Learn SQL fundamentals
+2. Master database design
+3. Practice with different systems
+4. Explore NoSQL databases
+
+Databases are the backbone of modern applications!"""
+    
+    # Science & Nature
+    elif any(k in query_lower for k in ['science', 'physics', 'chemistry', 'biology', 'nature', 'earth', 'space']):
+        if 'physics' in query_lower:
+            return """🔬 **Physics**
+
+**What is Physics?**
+Physics is the natural science that studies matter, energy, and their interactions.
+
+**Key Areas:**
+• Mechanics (motion, forces)
+• Thermodynamics (heat, energy)
+• Electromagnetism (electricity, magnetism)
+• Quantum mechanics (atomic particles)
+• Relativity (space, time)
+
+**Applications:**
+• Technology development
+• Medical imaging
+• Space exploration
+• Energy production
+• Engineering
+
+Physics explains how the universe works!"""
+        
+        elif 'chemistry' in query_lower:
+            return """🧪 **Chemistry**
+
+**What is Chemistry?**
+Chemistry is the study of matter, its properties, composition, and reactions.
+
+**Key Areas:**
+• Organic chemistry (carbon compounds)
+• Inorganic chemistry (non-carbon compounds)
+• Physical chemistry (energy, kinetics)
+• Analytical chemistry (measurement)
+• Biochemistry (life processes)
+
+**Applications:**
+• Medicine and pharmaceuticals
+• Materials science
+• Environmental science
+• Food science
+• Industrial processes
+
+Chemistry is central to understanding matter!"""
+        
+        elif 'biology' in query_lower:
+            return """🧬 **Biology**
+
+**What is Biology?**
+Biology is the study of living organisms and their interactions with the environment.
+
+**Key Areas:**
+• Cell biology (cellular processes)
+• Genetics (heredity, DNA)
+• Evolution (species development)
+• Ecology (environmental interactions)
+• Physiology (body functions)
+
+**Applications:**
+• Medicine and healthcare
+• Agriculture and food production
+• Environmental conservation
+• Biotechnology
+• Forensic science
+
+Biology helps us understand life itself!"""
+    
+    # Business & Economics
+    elif any(k in query_lower for k in ['business', 'economics', 'marketing', 'management', 'entrepreneur']):
+        if 'marketing' in query_lower:
+            return """📈 **Marketing**
+
+**What is Marketing?**
+Marketing is the process of promoting and selling products or services to customers.
+
+**Key Areas:**
+• Market research
+• Product development
+• Pricing strategies
+• Advertising and promotion
+• Customer relationship management
+
+**Digital Marketing:**
+• Social media marketing
+• Search engine optimization (SEO)
+• Content marketing
+• Email marketing
+• Pay-per-click advertising
+
+**Strategies:**
+• Target audience identification
+• Brand positioning
+• Customer journey mapping
+• Performance measurement
+
+Effective marketing drives business success!"""
+        
+        elif 'management' in query_lower:
+            return """👥 **Management**
+
+**What is Management?**
+Management is the process of planning, organizing, leading, and controlling resources to achieve organizational goals.
+
+**Key Functions:**
+• Planning (setting goals, strategies)
+• Organizing (structuring resources)
+• Leading (motivating, guiding)
+• Controlling (monitoring, evaluating)
+
+**Management Levels:**
+• Top-level (strategic decisions)
+• Middle-level (tactical planning)
+• First-line (operational supervision)
+
+**Skills Needed:**
+• Leadership
+• Communication
+• Decision-making
+• Problem-solving
+• Time management
+
+Good management is essential for organizational success!"""
+    
+    # Health & Wellness
+    elif any(k in query_lower for k in ['health', 'fitness', 'nutrition', 'exercise', 'wellness', 'medical']):
+        if 'nutrition' in query_lower or 'healthy eating' in query_lower:
+            return """🥗 **Nutrition & Healthy Eating**
+
+**What is Nutrition?**
+Nutrition is the study of how food affects health and the process of consuming nutrients for growth and maintenance.
+
+**Essential Nutrients:**
+• Proteins (building blocks)
+• Carbohydrates (energy source)
+• Fats (energy storage, cell function)
+• Vitamins (metabolic processes)
+• Minerals (body functions)
+• Water (hydration)
+
+**Healthy Eating Principles:**
+• Eat a variety of foods
+• Control portion sizes
+• Limit processed foods
+• Stay hydrated
+• Balance macronutrients
+
+**Benefits:**
+• Improved energy levels
+• Better immune function
+• Disease prevention
+• Weight management
+• Enhanced mental clarity
+
+Good nutrition is the foundation of health!"""
+        
+        elif 'exercise' in query_lower or 'fitness' in query_lower:
+            return """💪 **Exercise & Fitness**
+
+**What is Exercise?**
+Exercise is physical activity that improves or maintains physical fitness and overall health.
+
+**Types of Exercise:**
+• Cardiovascular (heart health)
+• Strength training (muscle building)
+• Flexibility (range of motion)
+• Balance (stability)
+• High-intensity interval training (HIIT)
+
+**Health Benefits:**
+• Improved cardiovascular health
+• Stronger muscles and bones
+• Better mental health
+• Weight management
+• Increased energy
+• Better sleep
+
+**Getting Started:**
+1. Choose activities you enjoy
+2. Start slowly and gradually increase
+3. Aim for 150 minutes moderate activity weekly
+4. Include strength training twice weekly
+5. Stay consistent
+
+Regular exercise is key to a healthy lifestyle!"""
+    
+    # Education & Learning
+    elif any(k in query_lower for k in ['education', 'learning', 'study', 'school', 'university', 'teaching']):
+        if 'study' in query_lower or 'studying' in query_lower:
+            return """📚 **Study Skills & Learning**
+
+**What are Study Skills?**
+Study skills are techniques and strategies that help you learn and retain information effectively.
+
+**Effective Study Strategies:**
+• Active learning (engagement)
+• Spaced repetition (review over time)
+• Practice testing (self-assessment)
+• Elaboration (explaining concepts)
+• Interleaving (mixing topics)
+
+**Study Environment:**
+• Quiet, well-lit space
+• Minimal distractions
+• Comfortable seating
+• All materials ready
+• Regular breaks
+
+**Study Techniques:**
+• Pomodoro Technique (25-minute sessions)
+• SQ3R Method (Survey, Question, Read, Recite, Review)
+• Mind mapping (visual organization)
+• Flashcards (active recall)
+
+**Tips for Success:**
+1. Set specific goals
+2. Create a study schedule
+3. Take regular breaks
+4. Get adequate sleep
+5. Stay organized
+
+Good study habits lead to academic success!"""
+    
+    # Arts & Culture
+    elif any(k in query_lower for k in ['art', 'music', 'literature', 'culture', 'history', 'philosophy']):
+        if 'art' in query_lower:
+            return """🎨 **Art**
+
+**What is Art?**
+Art is the expression of human creativity and imagination through various forms and media.
+
+**Types of Art:**
+• Visual arts (painting, sculpture, drawing)
+• Performing arts (music, dance, theater)
+• Literary arts (poetry, novels, essays)
+• Digital arts (graphic design, animation)
+• Applied arts (architecture, fashion)
+
+**Art Movements:**
+• Renaissance (14th-17th century)
+• Impressionism (19th century)
+• Modernism (early 20th century)
+• Contemporary art (present)
+
+**Benefits of Art:**
+• Creative expression
+• Emotional healing
+• Cultural understanding
+• Critical thinking
+• Aesthetic appreciation
+
+Art enriches human experience and culture!"""
+        
+        elif 'music' in query_lower:
+            return """🎵 **Music**
+
+**What is Music?**
+Music is the art of combining sounds in a harmonious and expressive way.
+
+**Elements of Music:**
+• Melody (tune)
+• Harmony (chord progressions)
+• Rhythm (beat, tempo)
+• Dynamics (volume)
+• Timbre (tone color)
+
+**Genres:**
+• Classical
+• Jazz
+• Rock
+• Pop
+• Hip-hop
+• Electronic
+• Folk
+• Country
+
+**Benefits of Music:**
+• Emotional expression
+• Stress relief
+• Cognitive development
+• Social connection
+• Cultural identity
+
+Music is a universal language that connects people!"""
+    
+    # Mathematics
+    elif any(k in query_lower for k in ['math', 'mathematics', 'algebra', 'geometry', 'calculus', 'statistics']):
+        return """🔢 **Mathematics**
+
+**What is Mathematics?**
+Mathematics is the study of numbers, shapes, patterns, and logical reasoning.
+
+**Branches of Mathematics:**
+• Arithmetic (basic operations)
+• Algebra (equations, variables)
+• Geometry (shapes, space)
+• Calculus (rates of change)
+• Statistics (data analysis)
+• Trigonometry (angles, triangles)
+
+**Applications:**
+• Science and engineering
+• Economics and finance
+• Computer science
+• Medicine and healthcare
+• Architecture and design
+
+**Problem-Solving Skills:**
+• Logical reasoning
+• Pattern recognition
+• Critical thinking
+• Abstract thinking
+• Analytical skills
+
+Mathematics is the language of science and technology!"""
+    
+    # Psychology
+    elif any(k in query_lower for k in ['psychology', 'mental health', 'behavior', 'mind', 'brain']):
+        return """🧠 **Psychology**
+
+**What is Psychology?**
+Psychology is the scientific study of mind and behavior, including mental processes and human interactions.
+
+**Branches of Psychology:**
+• Clinical psychology (mental health)
+• Cognitive psychology (mental processes)
+• Developmental psychology (human development)
+• Social psychology (group behavior)
+• Behavioral psychology (learning, conditioning)
+
+**Key Concepts:**
+• Consciousness and awareness
+• Memory and learning
+• Emotions and motivation
+• Personality and individual differences
+• Mental health and disorders
+
+**Applications:**
+• Therapy and counseling
+• Education and learning
+• Business and organizations
+• Health and wellness
+• Sports and performance
+
+Psychology helps us understand human behavior!"""
+    
+    # Default comprehensive response
+    return f"""📚 **Universal Knowledge Response**
+
+I understand you're asking about: **{query}**
+
+While I don't have a specific detailed answer for this topic in my current knowledge base, I can help you in several ways:
+
+**What I Can Do:**
+• Provide general information and guidance
+• Help you break down complex topics
+• Suggest learning resources and approaches
+• Answer related questions you might have
+
+**Suggestions:**
+• Try rephrasing your question with more specific terms
+• Ask about related topics I can help with
+• Use the Stock Market Knowledge tab for financial topics
+• Switch to different domain expertise modes
+
+**Available Domains:**
+• Technology & Engineering
+• Finance & Investment  
+• Healthcare & Medical
+• Education & Learning
+• Universal Knowledge
+
+Feel free to ask me about any of these areas, and I'll provide detailed, helpful information!"""
+
 # Main header
 st.markdown("""
 <div class="main-header">
@@ -1089,6 +1645,13 @@ if len(st.session_state.messages) == 0:
             "What can you help me with?",
             "Tell me about artificial intelligence",
             "How do I learn programming?"
+        ],
+        'knowledge': [
+            "What is machine learning?",
+            "Explain quantum physics",
+            "How does photosynthesis work?",
+            "What is blockchain technology?",
+            "Tell me about climate change"
         ],
         'finance': [
             "What is RSI in stock trading?",
