@@ -142,6 +142,377 @@ def get_domain_response(domain, user_message):
 
 *This is educational information only, not financial advice. Please consult with a financial advisor for personalized guidance.*"""
 
+    # Enhanced specific responses for common questions
+    user_lower = user_message.lower()
+    
+    # Technology domain specific responses
+    if domain == 'technology':
+        if 'python' in user_lower:
+            return """🐍 **Python Programming Language**
+
+**Definition:** Python is a high-level, interpreted programming language known for its simplicity and readability.
+
+**Key Characteristics:**
+• Easy-to-learn syntax
+• Versatile applications (web, data science, AI, automation)
+• Large standard library
+• Cross-platform compatibility
+• Strong community support
+
+**Example:** Used by companies like Google, Netflix, Instagram, and Spotify for web development, data analysis, and machine learning.
+
+**Strategy:** Start with basic syntax, practice with projects, explore libraries like NumPy, Pandas, Django, or Flask based on your interests."""
+        
+        elif 'javascript' in user_lower:
+            return """🟨 **JavaScript Programming Language**
+
+**Definition:** JavaScript is a dynamic programming language primarily used for web development and creating interactive web pages.
+
+**Key Characteristics:**
+• Runs in web browsers
+• Dynamic typing
+• Event-driven programming
+• Asynchronous capabilities
+• Extensive ecosystem (Node.js, React, Vue, Angular)
+
+**Example:** Powers interactive features on websites like Google Maps, Facebook, and Netflix's user interface.
+
+**Strategy:** Learn HTML/CSS first, then JavaScript fundamentals, followed by frameworks like React or Vue for modern web development."""
+        
+        elif 'react' in user_lower:
+            return """⚛️ **React JavaScript Library**
+
+**Definition:** React is a JavaScript library for building user interfaces, particularly single-page applications.
+
+**Key Characteristics:**
+• Component-based architecture
+• Virtual DOM for performance
+• JSX syntax
+• Unidirectional data flow
+• Rich ecosystem
+
+**Example:** Used by Facebook, Instagram, Netflix, Airbnb, and WhatsApp for their web interfaces.
+
+**Strategy:** Learn JavaScript first, then React fundamentals, practice with hooks, and explore the React ecosystem (Redux, Next.js)."""
+        
+        elif 'html' in user_lower:
+            return """🌐 **HTML (HyperText Markup Language)**
+
+**Definition:** HTML is the standard markup language used to create and structure web pages.
+
+**Key Characteristics:**
+• Markup language (not programming)
+• Uses tags to structure content
+• Works with CSS and JavaScript
+• Platform independent
+• Essential for web development
+
+**Example:** Every website you visit uses HTML to structure text, images, links, and other content.
+
+**Strategy:** Start with basic HTML tags, learn semantic HTML, practice with forms and tables, then combine with CSS for styling."""
+        
+        elif 'css' in user_lower:
+            return """🎨 **CSS (Cascading Style Sheets)**
+
+**Definition:** CSS is a stylesheet language used to describe the presentation of HTML documents.
+
+**Key Characteristics:**
+• Separates content from presentation
+• Cascading rules
+• Responsive design capabilities
+• Animation and transitions
+• Works with HTML and JavaScript
+
+**Example:** Controls colors, fonts, layouts, spacing, and animations on websites.
+
+**Strategy:** Learn CSS basics, understand selectors and properties, practice responsive design, explore CSS frameworks like Bootstrap or Tailwind."""
+        
+        elif 'database' in user_lower or 'sql' in user_lower:
+            return """🗄️ **Database & SQL**
+
+**Definition:** A database is an organized collection of data, and SQL (Structured Query Language) is used to manage and query databases.
+
+**Key Characteristics:**
+• Data storage and retrieval
+• ACID properties (Atomicity, Consistency, Isolation, Durability)
+• Relational and NoSQL options
+• Query optimization
+• Data integrity
+
+**Example:** Banks use databases to store customer accounts, transactions, and personal information securely.
+
+**Strategy:** Learn SQL fundamentals, practice with different database systems (MySQL, PostgreSQL), understand normalization, and explore NoSQL databases like MongoDB."""
+    
+    # General domain specific responses
+    elif domain == 'general':
+        if 'python' in user_lower:
+            return """🐍 **Python - A Versatile Programming Language**
+
+**What is Python?**
+Python is a high-level, interpreted programming language that emphasizes code readability and simplicity. It's one of the most popular programming languages today.
+
+**Why Python is Popular:**
+• Easy to learn and read
+• Versatile applications
+• Strong community support
+• Extensive libraries
+• Cross-platform compatibility
+
+**Common Uses:**
+• Web development (Django, Flask)
+• Data science and analytics
+• Machine learning and AI
+• Automation and scripting
+• Game development
+
+**Getting Started:**
+1. Install Python from python.org
+2. Learn basic syntax and data types
+3. Practice with simple projects
+4. Explore libraries based on your interests
+
+Python is an excellent choice for beginners and professionals alike!"""
+        
+        elif 'artificial intelligence' in user_lower or 'ai' in user_lower:
+            return """🤖 **Artificial Intelligence (AI)**
+
+**Definition:** AI refers to computer systems that can perform tasks typically requiring human intelligence, such as learning, reasoning, and problem-solving.
+
+**Types of AI:**
+• **Narrow AI:** Specialized tasks (Siri, Google Translate)
+• **General AI:** Human-level intelligence (still theoretical)
+• **Machine Learning:** Learning from data
+• **Deep Learning:** Neural networks
+
+**Applications:**
+• Virtual assistants (Siri, Alexa)
+• Recommendation systems (Netflix, Amazon)
+• Autonomous vehicles
+• Medical diagnosis
+• Financial trading
+
+**Getting Started:**
+1. Learn Python programming
+2. Study mathematics (statistics, linear algebra)
+3. Explore machine learning libraries (scikit-learn, TensorFlow)
+4. Practice with real datasets
+
+AI is transforming industries and creating new opportunities!"""
+        
+        elif 'programming' in user_lower:
+            return """💻 **Programming - The Art of Problem Solving**
+
+**What is Programming?**
+Programming is the process of creating instructions for computers to follow, enabling us to build software, websites, apps, and automate tasks.
+
+**Why Learn Programming?**
+• Problem-solving skills
+• Career opportunities
+• Creative expression
+• Automation capabilities
+• Understanding technology
+
+**Popular Programming Languages:**
+• **Python:** Beginner-friendly, versatile
+• **JavaScript:** Web development
+• **Java:** Enterprise applications
+• **C++:** System programming
+• **Swift:** iOS development
+
+**Learning Path:**
+1. Choose a language (Python recommended for beginners)
+2. Learn basic syntax and concepts
+3. Practice with small projects
+4. Build a portfolio
+5. Contribute to open source
+
+Programming opens doors to endless possibilities!"""
+
+    # Finance domain specific responses
+    elif domain == 'finance':
+        if 'investing' in user_lower or 'investment' in user_lower:
+            return """💰 **Investing Fundamentals**
+
+**Definition:** Investing is the act of allocating money or resources with the expectation of generating income or profit over time.
+
+**Key Principles:**
+• Start early to benefit from compound interest
+• Diversify your portfolio
+• Understand risk vs. return
+• Invest for the long term
+• Do your research
+
+**Investment Options:**
+• **Stocks:** Ownership in companies
+• **Bonds:** Lending money to governments/corporations
+• **Mutual Funds:** Diversified portfolios
+• **ETFs:** Exchange-traded funds
+• **Real Estate:** Property investment
+
+**Getting Started:**
+1. Set financial goals
+2. Build an emergency fund
+3. Start with low-cost index funds
+4. Learn about different asset classes
+5. Consider your risk tolerance
+
+*Remember: This is educational information, not financial advice. Consult a financial advisor for personalized guidance.*"""
+        
+        elif 'budget' in user_lower:
+            return """📊 **Budgeting - Your Financial Foundation**
+
+**Definition:** A budget is a plan for managing your income and expenses to achieve financial goals.
+
+**Benefits of Budgeting:**
+• Control over your money
+• Identify spending patterns
+• Save for goals
+• Reduce financial stress
+• Build wealth over time
+
+**Budgeting Methods:**
+• **50/30/20 Rule:** 50% needs, 30% wants, 20% savings
+• **Zero-Based Budget:** Every dollar assigned a purpose
+• **Envelope Method:** Cash-based spending
+• **Percentage Budget:** Income-based allocations
+
+**Steps to Create a Budget:**
+1. Calculate total monthly income
+2. List all expenses
+3. Categorize expenses (needs vs. wants)
+4. Set savings goals
+5. Track and adjust regularly
+
+**Tools:** Use apps like Mint, YNAB, or Excel spreadsheets to track your budget.
+
+*This is educational information, not financial advice.*"""
+        
+        elif 'compound interest' in user_lower:
+            return """📈 **Compound Interest - The Eighth Wonder**
+
+**Definition:** Compound interest is interest calculated on both the initial principal and the accumulated interest from previous periods.
+
+**How It Works:**
+• You earn interest on your original investment
+• You also earn interest on previously earned interest
+• The effect accelerates over time
+• Time is your greatest ally
+
+**Example:**
+• Invest $1,000 at 7% annual return
+• Year 1: $1,070
+• Year 10: $1,967
+• Year 30: $7,612
+
+**Key Factors:**
+• **Principal:** Initial amount invested
+• **Interest Rate:** Annual return percentage
+• **Time:** Length of investment period
+• **Frequency:** How often interest compounds
+
+**Maximizing Compound Interest:**
+1. Start investing early
+2. Invest regularly
+3. Reinvest dividends
+4. Avoid withdrawing early
+5. Choose appropriate investments
+
+*This is educational information, not financial advice.*"""
+
+    # Healthcare domain specific responses
+    elif domain == 'healthcare':
+        if 'healthy eating' in user_lower or 'nutrition' in user_lower:
+            return """🥗 **Healthy Eating Habits**
+
+**Definition:** Healthy eating involves consuming a variety of nutritious foods in appropriate portions to maintain good health and prevent disease.
+
+**Key Principles:**
+• Eat a variety of foods
+• Focus on whole foods
+• Control portion sizes
+• Limit processed foods
+• Stay hydrated
+
+**Essential Nutrients:**
+• **Proteins:** Build and repair tissues
+• **Carbohydrates:** Provide energy
+• **Fats:** Support cell function
+• **Vitamins:** Essential for health
+• **Minerals:** Support body functions
+
+**Healthy Eating Tips:**
+• Fill half your plate with fruits and vegetables
+• Choose whole grains
+• Include lean proteins
+• Limit added sugars and sodium
+• Eat regular meals
+
+*This is general health information, not medical advice. Consult healthcare professionals for personalized guidance.*"""
+        
+        elif 'exercise' in user_lower or 'fitness' in user_lower:
+            return """💪 **Exercise and Physical Activity**
+
+**Definition:** Exercise is physical activity that improves or maintains physical fitness and overall health.
+
+**Types of Exercise:**
+• **Cardio:** Heart and lung health (running, swimming)
+• **Strength:** Muscle building (weightlifting, resistance)
+• **Flexibility:** Range of motion (yoga, stretching)
+• **Balance:** Stability and coordination
+
+**Benefits:**
+• Improved cardiovascular health
+• Stronger muscles and bones
+• Better mental health
+• Weight management
+• Increased energy
+
+**Getting Started:**
+1. Choose activities you enjoy
+2. Start slowly and gradually increase
+3. Aim for 150 minutes of moderate activity weekly
+4. Include strength training twice weekly
+5. Stay consistent
+
+*This is general health information, not medical advice. Consult healthcare professionals before starting new exercise programs.*"""
+
+    # Education domain specific responses
+    elif domain == 'education':
+        if 'study habits' in user_lower or 'studying' in user_lower:
+            return """📚 **Effective Study Habits**
+
+**Definition:** Study habits are consistent practices and techniques that help you learn and retain information effectively.
+
+**Key Study Strategies:**
+• **Active Learning:** Engage with material actively
+• **Spaced Repetition:** Review material over time
+• **Practice Testing:** Test yourself regularly
+• **Elaboration:** Explain concepts in your own words
+• **Interleaving:** Mix different topics
+
+**Effective Study Environment:**
+• Quiet, well-lit space
+• Minimal distractions
+• Comfortable seating
+• All materials ready
+• Regular breaks
+
+**Study Techniques:**
+• **Pomodoro Technique:** 25-minute focused sessions
+• **SQ3R Method:** Survey, Question, Read, Recite, Review
+• **Mind Mapping:** Visual organization of information
+• **Flashcards:** Active recall practice
+
+**Tips for Success:**
+1. Set specific goals
+2. Create a study schedule
+3. Take regular breaks
+4. Get adequate sleep
+5. Stay organized
+
+Good study habits are the foundation of academic success!"""
+
+    # Default responses for other cases
     responses = {
         'general': [
             f"I understand you're asking about: {user_message}. As a general AI assistant, I can help with a wide range of topics. Could you be more specific about what you'd like to know?",
