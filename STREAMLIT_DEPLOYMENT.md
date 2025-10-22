@@ -29,9 +29,13 @@ Visit: https://share.streamlit.io/
 ## Your Streamlit App Features
 
 ✅ **Modern UI** with glassmorphism design  
-✅ **Intelligent AI responses** for programming questions  
+✅ **Intelligent AI responses** for all domains  
 ✅ **Interactive chat interface**  
-✅ **Knowledge base** for Python, React, Math, etc.  
+✅ **Comprehensive Stock Market Knowledge Base**  
+✅ **50+ Market Concepts** across 8 categories  
+✅ **Real-time search** functionality  
+✅ **Daily market tips** and insights  
+✅ **Domain expertise** switching  
 ✅ **Responsive design** for all devices  
 ✅ **Real-time chat** with Zeno AI  
 
@@ -58,7 +62,11 @@ If deployment fails:
 
 ## Features Available
 
-- **Chat with Zeno**: Ask programming questions
-- **Knowledge Base**: Python, React, JavaScript, Math, etc.
+- **Chat with Zeno**: Ask questions across multiple domains
+- **Stock Market Knowledge**: 50+ concepts with detailed explanations
+- **Interactive Search**: Real-time search across all concepts
+- **Domain Expertise**: Switch between General, Finance, Healthcare, Technology, Education
+- **Daily Market Tips**: Random educational insights
+- **Category Browsing**: 8 categories of market concepts
 - **Interactive UI**: Modern, responsive design
-- **Real-time Responses**: Intelligent AI answers
+- **Real-time Responses**: Intelligent AI answers with examples and strategies
