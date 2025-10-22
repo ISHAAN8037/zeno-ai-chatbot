@@ -3,6 +3,7 @@ import time
 import random
 from datetime import datetime
 import json
+import pandas as pd
 
 # Page configuration
 st.set_page_config(
@@ -85,6 +86,8 @@ if 'current_domain' not in st.session_state:
     st.session_state.current_domain = 'general'
 if 'user_name' not in st.session_state:
     st.session_state.user_name = ''
+if 'current_tab' not in st.session_state:
+    st.session_state.current_tab = 'chat'
 
 # Domain configurations
 domains = {
@@ -122,6 +125,23 @@ domains = {
 
 # Sample responses for different domains
 def get_domain_response(domain, user_message):
+    # Check if it's a stock market related question
+    stock_search_results = search_stock_knowledge(user_message)
+    if stock_search_results and domain == 'finance':
+        concept = stock_search_results[0]['concept']
+        return f"""📈 **{concept['title']}**
+
+**Definition:** {concept['definition']}
+
+**Key Characteristics:**
+{chr(10).join([f"• {char}" for char in concept['characteristics']])}
+
+**Example:** {concept['example']}
+
+**Strategy:** {concept['strategy']}
+
+*This is educational information only, not financial advice. Please consult with a financial advisor for personalized guidance.*"""
+
     responses = {
         'general': [
             f"I understand you're asking about: {user_message}. As a general AI assistant, I can help with a wide range of topics. Could you be more specific about what you'd like to know?",
@@ -152,6 +172,249 @@ def get_domain_response(domain, user_message):
     
     domain_responses = responses.get(domain, responses['general'])
     return random.choice(domain_responses)
+
+# Stock Market Knowledge Base
+def get_stock_knowledge_base():
+    return {
+        'basic_concepts': {
+            'title': 'Basic Concepts',
+            'concepts': [
+                {
+                    'title': 'Bull Market',
+                    'definition': 'A financial market condition where prices are rising or expected to rise.',
+                    'characteristics': ['Optimistic investor sentiment', 'Economic growth', 'High trading volume', 'Rising stock prices'],
+                    'example': 'The S&P 500 rising from 2,000 to 3,000 over 2 years',
+                    'strategy': 'Consider growth stocks and momentum strategies during bull markets'
+                },
+                {
+                    'title': 'Bear Market',
+                    'definition': 'A market condition where prices are falling or expected to fall.',
+                    'characteristics': ['Pessimistic sentiment', 'Economic decline', 'Low trading volume', 'Falling stock prices'],
+                    'example': 'Market dropping 20% or more from recent highs',
+                    'strategy': 'Focus on defensive stocks, bonds, and value investments'
+                },
+                {
+                    'title': 'Market Cycle',
+                    'definition': 'The recurring pattern of market phases from expansion to contraction.',
+                    'characteristics': ['Bull market', 'Market peak', 'Bear market', 'Market bottom'],
+                    'example': '2008-2020 cycle: Bear market (2008-2009), Bull market (2009-2020)',
+                    'strategy': 'Diversify across different asset classes and rebalance regularly'
+                }
+            ]
+        },
+        'technical_analysis': {
+            'title': 'Technical Analysis',
+            'concepts': [
+                {
+                    'title': 'Support Level',
+                    'definition': 'A price level where a stock tends to find buying interest and bounce back up.',
+                    'characteristics': ['Historical price floor', 'High trading volume', 'Psychological barrier', 'Repeated bounces'],
+                    'example': 'Apple stock bouncing off $150 multiple times',
+                    'strategy': 'Consider buying near support levels with proper risk management'
+                },
+                {
+                    'title': 'Resistance Level',
+                    'definition': 'A price level where a stock tends to find selling pressure and reverse down.',
+                    'characteristics': ['Historical price ceiling', 'High trading volume', 'Psychological barrier', 'Repeated rejections'],
+                    'example': 'Tesla struggling to break above $300',
+                    'strategy': 'Consider selling or taking profits near resistance levels'
+                },
+                {
+                    'title': 'Trend Line',
+                    'definition': 'A line drawn connecting price points to identify market direction.',
+                    'characteristics': ['Uptrend: higher highs and higher lows', 'Downtrend: lower highs and lower lows', 'Sideways: horizontal movement'],
+                    'example': 'Drawing a line connecting the lows of an uptrending stock',
+                    'strategy': 'Trade in the direction of the trend with proper stop losses'
+                }
+            ]
+        },
+        'technical_indicators': {
+            'title': 'Technical Indicators',
+            'concepts': [
+                {
+                    'title': 'RSI (Relative Strength Index)',
+                    'definition': 'A momentum oscillator that measures the speed and change of price movements.',
+                    'characteristics': ['Range: 0-100', 'Overbought: >70', 'Oversold: <30', 'Momentum indicator'],
+                    'example': 'RSI of 80 indicates overbought conditions',
+                    'strategy': 'Buy when RSI < 30 (oversold), sell when RSI > 70 (overbought)'
+                },
+                {
+                    'title': 'MACD (Moving Average Convergence Divergence)',
+                    'definition': 'A trend-following momentum indicator showing relationship between two moving averages.',
+                    'characteristics': ['MACD line', 'Signal line', 'Histogram', 'Zero line crossovers'],
+                    'example': 'MACD line crossing above signal line indicates bullish momentum',
+                    'strategy': 'Buy on bullish crossover, sell on bearish crossover'
+                },
+                {
+                    'title': 'Bollinger Bands',
+                    'definition': 'A volatility indicator consisting of a moving average and two standard deviation bands.',
+                    'characteristics': ['Upper band', 'Middle band (SMA)', 'Lower band', 'Volatility expansion/contraction'],
+                    'example': 'Price touching upper band suggests overbought conditions',
+                    'strategy': 'Buy when price touches lower band, sell when touching upper band'
+                }
+            ]
+        },
+        'fundamental_analysis': {
+            'title': 'Fundamental Analysis',
+            'concepts': [
+                {
+                    'title': 'P/E Ratio (Price-to-Earnings)',
+                    'definition': 'The ratio of a company\'s stock price to its earnings per share.',
+                    'characteristics': ['Valuation metric', 'Lower = potentially undervalued', 'Higher = potentially overvalued', 'Industry comparison important'],
+                    'example': 'Stock trading at $100 with EPS of $5 has P/E of 20',
+                    'strategy': 'Compare P/E ratios within the same industry for relative valuation'
+                },
+                {
+                    'title': 'EPS (Earnings Per Share)',
+                    'definition': 'A company\'s profit divided by the number of outstanding shares.',
+                    'characteristics': ['Profitability measure', 'Growth indicator', 'Dividend capacity', 'Share dilution impact'],
+                    'example': 'Company with $1M profit and 100K shares has EPS of $10',
+                    'strategy': 'Look for consistent EPS growth over time'
+                },
+                {
+                    'title': 'ROE (Return on Equity)',
+                    'definition': 'A measure of how efficiently a company uses shareholders\' equity to generate profits.',
+                    'characteristics': ['Efficiency metric', 'Higher = better', 'Industry benchmark', 'Sustainable growth indicator'],
+                    'example': 'ROE of 15% means company generates $15 profit per $100 equity',
+                    'strategy': 'Prefer companies with ROE above industry average'
+                }
+            ]
+        },
+        'trading_strategies': {
+            'title': 'Trading Strategies',
+            'concepts': [
+                {
+                    'title': 'Value Investing',
+                    'definition': 'Strategy of buying stocks that appear undervalued based on fundamental analysis.',
+                    'characteristics': ['Long-term approach', 'Fundamental analysis', 'Margin of safety', 'Contrarian mindset'],
+                    'example': 'Buying a stock trading below its intrinsic value',
+                    'strategy': 'Focus on companies with strong fundamentals trading at discounts'
+                },
+                {
+                    'title': 'Growth Investing',
+                    'definition': 'Strategy focused on companies with above-average growth potential.',
+                    'characteristics': ['High growth rates', 'Future potential', 'Higher valuations', 'Technology focus'],
+                    'example': 'Investing in emerging tech companies with rapid revenue growth',
+                    'strategy': 'Look for companies with consistent revenue and earnings growth'
+                },
+                {
+                    'title': 'Momentum Trading',
+                    'definition': 'Strategy based on following trends and price momentum.',
+                    'characteristics': ['Trend following', 'Technical analysis', 'Short to medium term', 'Volume confirmation'],
+                    'example': 'Buying stocks that are breaking out to new highs',
+                    'strategy': 'Enter positions in the direction of strong momentum with tight stops'
+                }
+            ]
+        },
+        'risk_management': {
+            'title': 'Risk Management',
+            'concepts': [
+                {
+                    'title': 'Diversification',
+                    'definition': 'Strategy of spreading investments across different assets to reduce risk.',
+                    'characteristics': ['Asset allocation', 'Sector diversification', 'Geographic spread', 'Risk reduction'],
+                    'example': 'Portfolio with stocks, bonds, real estate, and commodities',
+                    'strategy': 'Allocate across different asset classes and sectors'
+                },
+                {
+                    'title': 'Stop Loss',
+                    'definition': 'An order to sell a security when it reaches a predetermined price.',
+                    'characteristics': ['Risk control', 'Emotional discipline', 'Capital preservation', 'Automated execution'],
+                    'example': 'Setting stop loss at 10% below purchase price',
+                    'strategy': 'Always use stop losses to limit downside risk'
+                },
+                {
+                    'title': 'Position Sizing',
+                    'definition': 'Determining how much capital to allocate to each investment.',
+                    'characteristics': ['Risk management', 'Portfolio balance', 'Volatility consideration', 'Correlation analysis'],
+                    'example': 'Limiting single stock to 5% of total portfolio',
+                    'strategy': 'Size positions based on risk tolerance and volatility'
+                }
+            ]
+        },
+        'market_psychology': {
+            'title': 'Market Psychology',
+            'concepts': [
+                {
+                    'title': 'Fear and Greed Index',
+                    'definition': 'A sentiment indicator measuring market emotions from extreme fear to extreme greed.',
+                    'characteristics': ['Sentiment gauge', 'Contrarian indicator', '0-100 scale', 'Market timing tool'],
+                    'example': 'Index at 20 indicates extreme fear, potential buying opportunity',
+                    'strategy': 'Buy when fear is extreme, be cautious when greed is high'
+                },
+                {
+                    'title': 'Herd Mentality',
+                    'definition': 'The tendency of investors to follow the crowd rather than independent analysis.',
+                    'characteristics': ['Group behavior', 'Emotional decisions', 'Market bubbles', 'Contrarian opportunities'],
+                    'example': 'Everyone buying tech stocks during dot-com bubble',
+                    'strategy': 'Avoid following the herd; maintain independent analysis'
+                }
+            ]
+        },
+        'economic_indicators': {
+            'title': 'Economic Indicators',
+            'concepts': [
+                {
+                    'title': 'GDP (Gross Domestic Product)',
+                    'definition': 'The total value of goods and services produced in a country.',
+                    'characteristics': ['Economic health', 'Growth measure', 'Quarterly reports', 'Market impact'],
+                    'example': 'GDP growth of 3% indicates healthy economic expansion',
+                    'strategy': 'Strong GDP growth typically supports stock market performance'
+                },
+                {
+                    'title': 'Inflation Rate',
+                    'definition': 'The rate at which prices for goods and services increase over time.',
+                    'characteristics': ['Purchasing power', 'Central bank policy', 'Interest rates', 'Consumer impact'],
+                    'example': '2% inflation means prices increase 2% annually',
+                    'strategy': 'Moderate inflation (2-3%) is generally positive for markets'
+                },
+                {
+                    'title': 'Interest Rates',
+                    'definition': 'The cost of borrowing money, set by central banks.',
+                    'characteristics': ['Monetary policy tool', 'Economic stimulus', 'Bond yields', 'Stock valuations'],
+                    'example': 'Fed raising rates from 0.25% to 2.5%',
+                    'strategy': 'Rising rates typically pressure stock valuations'
+                }
+            ]
+        }
+    }
+
+def search_stock_knowledge(query):
+    """Search through stock market knowledge base"""
+    knowledge_base = get_stock_knowledge_base()
+    results = []
+    
+    query_lower = query.lower()
+    
+    for category, data in knowledge_base.items():
+        for concept in data['concepts']:
+            # Search in title, definition, and characteristics
+            searchable_text = f"{concept['title']} {concept['definition']} {' '.join(concept['characteristics'])}".lower()
+            
+            if any(keyword in searchable_text for keyword in query_lower.split()):
+                results.append({
+                    'concept': concept,
+                    'category': data['title'],
+                    'relevance': len([k for k in query_lower.split() if k in searchable_text])
+                })
+    
+    # Sort by relevance
+    results.sort(key=lambda x: x['relevance'], reverse=True)
+    return results[:3]  # Return top 3 results
+
+def get_daily_tip():
+    """Get a random daily market tip"""
+    tips = [
+        "📈 **Market Tip:** Always diversify your portfolio across different sectors to reduce risk.",
+        "💰 **Investment Tip:** Start investing early to benefit from compound interest over time.",
+        "📊 **Analysis Tip:** Use both technical and fundamental analysis for better investment decisions.",
+        "⚠️ **Risk Tip:** Never invest more than you can afford to lose.",
+        "🎯 **Strategy Tip:** Have a clear investment plan and stick to it, avoiding emotional decisions.",
+        "📈 **Growth Tip:** Focus on companies with strong fundamentals and consistent earnings growth.",
+        "🔄 **Market Tip:** Market cycles are normal - stay disciplined during both bull and bear markets.",
+        "📚 **Learning Tip:** Continuously educate yourself about market trends and investment strategies."
+    ]
+    return random.choice(tips)
 
 # Main header
 st.markdown("""
@@ -207,97 +470,172 @@ with st.sidebar:
     - **Responsive Layout**
     """)
 
-# Main chat interface
-col1, col2 = st.columns([3, 1])
+# Main interface with tabs
+tab1, tab2 = st.tabs(["💬 Chat", "📚 Stock Market Knowledge"])
 
-with col1:
-    st.markdown(f"### 💬 Chat with {current_domain_info['name']}")
-    
-    # Display chat messages
-    for message in st.session_state.messages:
-        if message['type'] == 'user':
-            st.markdown(f"""
-            <div class="chat-message user-message">
-                <strong>You:</strong> {message['content']}
-                <br><small>{message['timestamp']}</small>
-            </div>
-            """, unsafe_allow_html=True)
-        else:
-            st.markdown(f"""
-            <div class="chat-message bot-message">
-                <strong>Zeno ({current_domain_info['name']}):</strong> {message['content']}
-                <br><small>{message['timestamp']}</small>
-            </div>
-            """, unsafe_allow_html=True)
-    
-    # Chat input
-    user_input = st.text_input(
-        f"Type your message here... (Currently in {current_domain_info['name']} mode)",
-        key="chat_input",
-        placeholder="Ask me anything!"
-    )
-    
-    col_send, col_clear = st.columns([1, 1])
-    
-    with col_send:
-        if st.button("🚀 Send Message", type="primary"):
-            if user_input:
-                # Add user message
-                timestamp = datetime.now().strftime("%H:%M:%S")
-                st.session_state.messages.append({
-                    'type': 'user',
-                    'content': user_input,
-                    'timestamp': timestamp
-                })
-                
-                # Generate bot response
-                with st.spinner("Zeno is thinking..."):
-                    time.sleep(1)  # Simulate thinking time
-                    bot_response = get_domain_response(st.session_state.current_domain, user_input)
-                
-                # Add bot response
-                timestamp = datetime.now().strftime("%H:%M:%S")
-                st.session_state.messages.append({
-                    'type': 'bot',
-                    'content': bot_response,
-                    'timestamp': timestamp
-                })
-                
+with tab1:
+    # Main chat interface
+    col1, col2 = st.columns([3, 1])
+
+    with col1:
+        st.markdown(f"### 💬 Chat with {current_domain_info['name']}")
+        
+        # Display chat messages
+        for message in st.session_state.messages:
+            if message['type'] == 'user':
+                st.markdown(f"""
+                <div class="chat-message user-message">
+                    <strong>You:</strong> {message['content']}
+                    <br><small>{message['timestamp']}</small>
+                </div>
+                """, unsafe_allow_html=True)
+            else:
+                st.markdown(f"""
+                <div class="chat-message bot-message">
+                    <strong>Zeno ({current_domain_info['name']}):</strong> {message['content']}
+                    <br><small>{message['timestamp']}</small>
+                </div>
+                """, unsafe_allow_html=True)
+        
+        # Chat input
+        user_input = st.text_input(
+            f"Type your message here... (Currently in {current_domain_info['name']} mode)",
+            key="chat_input",
+            placeholder="Ask me anything!"
+        )
+        
+        col_send, col_clear = st.columns([1, 1])
+        
+        with col_send:
+            if st.button("🚀 Send Message", type="primary"):
+                if user_input:
+                    # Add user message
+                    timestamp = datetime.now().strftime("%H:%M:%S")
+                    st.session_state.messages.append({
+                        'type': 'user',
+                        'content': user_input,
+                        'timestamp': timestamp
+                    })
+                    
+                    # Generate bot response
+                    with st.spinner("Zeno is thinking..."):
+                        time.sleep(1)  # Simulate thinking time
+                        bot_response = get_domain_response(st.session_state.current_domain, user_input)
+                    
+                    # Add bot response
+                    timestamp = datetime.now().strftime("%H:%M:%S")
+                    st.session_state.messages.append({
+                        'type': 'bot',
+                        'content': bot_response,
+                        'timestamp': timestamp
+                    })
+                    
+                    st.rerun()
+        
+        with col_clear:
+            if st.button("🗑️ Clear"):
+                st.session_state.messages = []
                 st.rerun()
-    
-    with col_clear:
-        if st.button("🗑️ Clear"):
+
+    with col2:
+        # Quick actions
+        st.markdown("### ⚡ Quick Actions")
+        
+        if st.button("🏠 Back to Home"):
             st.session_state.messages = []
             st.rerun()
+        
+        if st.button("🔄 Switch Domain"):
+            st.session_state.current_domain = random.choice(list(domains.keys()))
+            st.rerun()
+        
+        if st.button("📊 View Stats"):
+            st.info(f"Messages in this session: {len(st.session_state.messages)}")
+        
+        # Domain features
+        st.markdown("### 🎯 Current Domain Features")
+        st.markdown(f"""
+        **{current_domain_info['name']}**
+        
+        {current_domain_info['description']}
+        
+        **Capabilities:**
+        - Specialized knowledge base
+        - Domain-specific responses
+        - Professional expertise
+        - Industry best practices
+        """)
 
-with col2:
-    # Quick actions
-    st.markdown("### ⚡ Quick Actions")
+with tab2:
+    st.markdown("### 📚 Stock Market Knowledge Base")
     
-    if st.button("🏠 Back to Home"):
-        st.session_state.messages = []
-        st.rerun()
+    # Search functionality
+    search_query = st.text_input("🔍 Search market concepts:", placeholder="e.g., RSI, P/E ratio, diversification")
     
-    if st.button("🔄 Switch Domain"):
-        st.session_state.current_domain = random.choice(list(domains.keys()))
-        st.rerun()
+    if search_query:
+        results = search_stock_knowledge(search_query)
+        if results:
+            st.markdown(f"**Found {len(results)} result(s) for '{search_query}':**")
+            for result in results:
+                concept = result['concept']
+                with st.expander(f"📈 {concept['title']} ({result['category']})"):
+                    st.markdown(f"**Definition:** {concept['definition']}")
+                    st.markdown(f"**Key Characteristics:**")
+                    for char in concept['characteristics']:
+                        st.markdown(f"• {char}")
+                    st.markdown(f"**Example:** {concept['example']}")
+                    st.markdown(f"**Strategy:** {concept['strategy']}")
+        else:
+            st.warning(f"No results found for '{search_query}'. Try different keywords.")
     
-    if st.button("📊 View Stats"):
-        st.info(f"Messages in this session: {len(st.session_state.messages)}")
+    # Categories
+    st.markdown("### 📊 Browse by Category")
+    knowledge_base = get_stock_knowledge_base()
     
-    # Domain features
-    st.markdown("### 🎯 Current Domain Features")
-    st.markdown(f"""
-    **{current_domain_info['name']}**
+    # Create columns for categories
+    cols = st.columns(2)
+    for i, (category_key, category_data) in enumerate(knowledge_base.items()):
+        with cols[i % 2]:
+            with st.expander(f"📁 {category_data['title']} ({len(category_data['concepts'])} concepts)"):
+                for concept in category_data['concepts']:
+                    st.markdown(f"**{concept['title']}**")
+                    st.markdown(f"*{concept['definition']}*")
+                    st.markdown("---")
     
-    {current_domain_info['description']}
+    # Daily tip
+    st.markdown("### 💡 Daily Market Tip")
+    st.info(get_daily_tip())
     
-    **Capabilities:**
-    - Specialized knowledge base
-    - Domain-specific responses
-    - Professional expertise
-    - Industry best practices
-    """)
+    # Quick access buttons
+    st.markdown("### ⚡ Quick Access")
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        if st.button("📈 Technical Analysis"):
+            st.session_state.messages.append({
+                'type': 'user',
+                'content': 'technical analysis',
+                'timestamp': datetime.now().strftime("%H:%M:%S")
+            })
+            st.rerun()
+    
+    with col2:
+        if st.button("💰 Fundamental Analysis"):
+            st.session_state.messages.append({
+                'type': 'user',
+                'content': 'fundamental analysis',
+                'timestamp': datetime.now().strftime("%H:%M:%S")
+            })
+            st.rerun()
+    
+    with col3:
+        if st.button("⚠️ Risk Management"):
+            st.session_state.messages.append({
+                'type': 'user',
+                'content': 'risk management',
+                'timestamp': datetime.now().strftime("%H:%M:%S")
+            })
+            st.rerun()
 
 # Footer
 st.markdown("---")
@@ -319,9 +657,11 @@ if len(st.session_state.messages) == 0:
             "How do I learn programming?"
         ],
         'finance': [
-            "What are the basics of investing?",
-            "How do I create a budget?",
-            "What is compound interest?"
+            "What is RSI in stock trading?",
+            "How do I analyze P/E ratios?",
+            "What is diversification in investing?",
+            "Explain bull vs bear markets",
+            "What are Bollinger Bands?"
         ],
         'healthcare': [
             "What are healthy eating habits?",
