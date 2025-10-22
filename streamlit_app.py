@@ -131,9 +131,10 @@ domains = {
 
 # Sample responses for different domains
 def get_domain_response(domain, user_message):
-    # Check if it's a stock market related question (answer regardless of domain)
-    stock_search_results = search_stock_knowledge(user_message)
-    if stock_search_results:
+    # Use stock knowledge only when the query is finance-related
+    if is_stock_query(user_message):
+        stock_search_results = search_stock_knowledge(user_message)
+        if stock_search_results:
         concept = stock_search_results[0]['concept']
         return f"""📈 **{concept['title']}**
 
@@ -799,23 +800,41 @@ def search_stock_knowledge(query):
     knowledge_base = get_stock_knowledge_base()
     results = []
     
-    query_lower = query.lower()
+    # Basic stopwords to avoid noisy matches
+    stopwords = {"what","is","are","the","a","an","in","of","to","for","and","on","with","about","explain","define"}
+    tokens = [t for t in query.lower().split() if len(t) >= 3 and t not in stopwords]
+    if not tokens:
+        return []
+
+    query_lower = " ".join(tokens)
     
     for category, data in knowledge_base.items():
         for concept in data['concepts']:
             # Search in title, definition, and characteristics
             searchable_text = f"{concept['title']} {concept['definition']} {' '.join(concept['characteristics'])}".lower()
             
-            if any(keyword in searchable_text for keyword in query_lower.split()):
+            matches = [k for k in tokens if k in searchable_text]
+            if matches:
                 results.append({
                     'concept': concept,
                     'category': data['title'],
-                    'relevance': len([k for k in query_lower.split() if k in searchable_text])
+                    'relevance': len(matches)
                 })
     
     # Sort by relevance
     results.sort(key=lambda x: x['relevance'], reverse=True)
     return results[:3]  # Return top 3 results
+
+# Heuristic to decide if a user query is about stocks/markets
+def is_stock_query(text: str) -> bool:
+    t = text.lower()
+    finance_keywords = [
+        'stock','stocks','share','shares','market','markets','equity','equities','portfolio','index','indexes','indices',
+        'invest','investing','investment','trading','trade','trader','broker','exchange','nasdaq','nyse','nifty','sensex',
+        'support','resistance','trend','breakout','rsi','macd','bollinger','sma','ema','candle','candlestick','pe ratio','p/e',
+        'dividend','valuation','roe','eps','beta','var','sharpe','gdp','inflation','interest rate','yield','bond'
+    ]
+    return any(k in t for k in finance_keywords)
 
 def get_daily_tip():
     """Get a random daily market tip"""
