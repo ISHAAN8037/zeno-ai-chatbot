@@ -135,8 +135,8 @@ def get_domain_response(domain, user_message):
     if is_stock_query(user_message):
         stock_search_results = search_stock_knowledge(user_message)
         if stock_search_results:
-        concept = stock_search_results[0]['concept']
-        return f"""📈 **{concept['title']}**
+            concept = stock_search_results[0]['concept']
+            return f"""📈 **{concept['title']}**
 
 **Definition:** {concept['definition']}
 
